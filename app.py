@@ -21,13 +21,13 @@ def predict():
 
         img_bytes = file.read()
         img = Image.open(io.BytesIO(img_bytes))
-        # print("File obtenido: ", img)
         imgs = [img]
         results = model(imgs)
 
         # updates results.imgs with boxes and labels
         results.render()
         results.print()
+
         # results.save(save_dir="static/results")
         image_base64 = ""
         for im in results.ims:
@@ -38,13 +38,9 @@ def predict():
             image_base64 += base64.b64encode(
                 buffered.getvalue()
             ).decode('utf-8')
-        # print(results)
-        # test.save()
 
-        # copia codigo prueba bse 64
-        # base64_image = results
-        # decode_base64 = base64.b64decode(base64_image)
         image_base64_src = "data:image/jpeg;base64, {}".format(image_base64)
+
         return render_template("index.html", results=image_base64_src)
     else:
         return render_template("index.html")
